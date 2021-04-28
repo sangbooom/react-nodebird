@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Link from "next/Link";
-import { Menu } from "antd";
+import { Input, Menu, Row, Col } from "antd";
+import UserProfile from "./UserProfile";
+import LoginForm from "./LoginForm";
+import styled from 'styled-components';
+
+const  SearchInput = styled(Input.Search)`
+  vertical-align: middle;
+`
 
 const AppLayout = ({ children }) => {
+  const [isLoggedIn, setLoggedIn] = useState(false);
   return (
     <div>
       <Menu mode="horizontal">
@@ -18,12 +26,31 @@ const AppLayout = ({ children }) => {
           </Link>
         </Menu.Item>
         <Menu.Item>
+          <SearchInput enterButton />
+        </Menu.Item>
+        <Menu.Item>
           <Link href="/signup">
             <a>회원가입</a>
           </Link>
         </Menu.Item>
       </Menu>
-      {children}
+      <Row gutter={8}>
+        <Col xs={24} md={6}>
+          {isLoggedIn ? <UserProfile setLoggedIn={setLoggedIn} /> : <LoginForm setLoggedIn={setLoggedIn}/>}
+        </Col>
+        <Col xs={24} md={12}>
+          {children}
+        </Col>
+        <Col xs={24} md={6}>
+          <a
+            href="https://www.naver.com"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            made by sangboom
+          </a>
+        </Col>
+      </Row>
     </div>
   );
 };
