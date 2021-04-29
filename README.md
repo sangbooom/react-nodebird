@@ -5,8 +5,12 @@
 
 ## 📚 사용 예정 기술 스택
 ### front
-- Next.js(SSR) ,React Hooks ,Redux ,Redux saga
+- Next.js(SSR) ,React Hooks ,Redux(next-redux-wrapper) ,Redux-saga
 - Ant Design + Styled Components
 ### back
 - Node + Express + Sequelize(MySQL)
-- 검색엔진 최적화와 AWS 배포(간단하게 EC2 + Lambda + S3 + Route53 사용예정)
+- AWS 배포(간단하게 EC2 + Lambda + S3 + Route53 사용예정)
+
+### 추가 구현
+- 검색엔진 최적화
+- 어드민페이지 만들기
