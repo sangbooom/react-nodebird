@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Link from "next/Link";
+import Link from "next/link";
 import { Input, Menu, Row, Col } from "antd";
 import UserProfile from "./UserProfile";
 import LoginForm from "./LoginForm";
