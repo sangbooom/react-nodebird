@@ -1,54 +1,45 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React from "react";
 import Link from "next/link";
-import { Input, Menu, Row, Col } from "antd";
-import UserProfile from "./UserProfile";
-import LoginForm from "./LoginForm";
-import styled from "styled-components";
+import PropTypes from "prop-types";
+import { Col, Input, Menu, Row } from "antd";
 import { useSelector } from "react-redux";
 
-const SearchInput = styled(Input.Search)`
-  vertical-align: middle;
-`;
+import LoginForm from "./LoginForm";
+import UserProfile from "./UserProfile";
 
 const AppLayout = ({ children }) => {
-  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const { me } = useSelector((state) => state.user);
   return (
     <div>
       <Menu mode="horizontal">
-        <Menu.Item>
+        <Menu.Item key="home">
           <Link href="/">
             <a>노드버드</a>
           </Link>
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item key="profile">
           <Link href="/profile">
             <a>프로필</a>
           </Link>
         </Menu.Item>
-        <Menu.Item>
-          <SearchInput enterButton />
-        </Menu.Item>
-        <Menu.Item>
-          <Link href="/signup">
-            <a>회원가입</a>
-          </Link>
+        <Menu.Item key="mail">
+          <Input.Search enterButton style={{ verticalAlign: "middle" }} />
         </Menu.Item>
       </Menu>
       <Row gutter={8}>
         <Col xs={24} md={6}>
-          {isLoggedIn ? <UserProfile /> : <LoginForm />}
+          {me ? <UserProfile /> : <LoginForm />}
         </Col>
         <Col xs={24} md={12}>
           {children}
         </Col>
         <Col xs={24} md={6}>
           <a
-            href="https://www.naver.com"
+            href="https://www.zerocho.com"
             target="_blank"
             rel="noreferrer noopener"
           >
-            made by sangboom
+            Made by sangbooom
           </a>
         </Col>
       </Row>
@@ -57,7 +48,7 @@ const AppLayout = ({ children }) => {
 };
 
 AppLayout.propTypes = {
-  children: PropTypes.node.isRequired, // return 안에 들어가는건 모두 node임
+  children: PropTypes.node.isRequired,
 };
 
 export default AppLayout;
