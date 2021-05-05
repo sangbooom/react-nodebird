@@ -61,7 +61,7 @@ const PostForm = () => {
         {imagePaths.map((v) => (
           <div key={v} style={{ display: "inline-block" }}>
             <img
-              src={`http://localhost:3000/${v}`}
+              src={`http://localhost:3060/${v}`}
               style={{ width: "200px" }}
               alt={v}
             />

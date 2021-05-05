@@ -26,16 +26,17 @@ const Signup = () => {
   }, [me && me.id]);
 
   useEffect(() => {
-    if (signUpDone) {
-      Router.replace("/");
+    if(signUpDone) {
+      Router.replace('/');
     }
-  }, [signUpDone]);
+  },[signUpDone]);
 
   useEffect(() => {
-    if (signUpError) {
-      alert(signUpError);
+    if(signUpError) {
+      alert(signUpError)
     }
-  }, [signUpError]);
+  },[signUpError])
+
 
   const [email, onChangeEmail] = useInput("");
   const [nickname, onChangeNickname] = useInput("");
