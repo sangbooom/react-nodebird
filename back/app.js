@@ -3,8 +3,9 @@ const cors = require("cors");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const passport = require("passport");
-const dotenv = require("dotenv")
+const dotenv = require("dotenv");
 const postRouter = require("./routes/post");
+const postsRouter = require("./routes/posts");
 const userRouter = require("./routes/user");
 const db = require("./models");
 const passportConfig = require("./passport");
@@ -22,8 +23,8 @@ passportConfig();
 
 app.use(
   cors({
-    origin: "*",
-    credentials: false,
+    origin: "http://localhost:3060",
+    credentials: true,
   })
 );
 app.use(express.json()); // 프론트에서 req에 post,put,patch로 넘겨주면 해석해준다.
@@ -44,6 +45,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/post", postRouter); // 분리
+app.use("/posts", postsRouter);
 app.use("/user", userRouter);
 
 app.listen("3065", () => {

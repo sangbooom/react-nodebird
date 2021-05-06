@@ -1,17 +1,23 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 
-import PostForm from '../components/PostForm';
-import PostCard from '../components/PostCard';
-import AppLayout from '../components/AppLayout';
-import { LOAD_POSTS_REQUEST } from '../reducers/post';
+import PostForm from "../components/PostForm";
+import PostCard from "../components/PostCard";
+import AppLayout from "../components/AppLayout";
+import { LOAD_POSTS_REQUEST } from "../reducers/post";
+import { LOAD_USER_REQUEST } from "../reducers/user";
 
 const Home = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
+  const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector(
+    (state) => state.post
+  );
 
   useEffect(() => {
+    dispatch({
+      type: LOAD_USER_REQUEST,
+    });
     dispatch({
       type: LOAD_POSTS_REQUEST,
     });
@@ -19,8 +25,11 @@ const Home = () => {
 
   useEffect(() => {
     function onScroll() {
-      console.log(window.scrollY ,document.documentElement.clientHeight);
-      if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
+      console.log(window.scrollY, document.documentElement.clientHeight);
+      if (
+        window.scrollY + document.documentElement.clientHeight >
+        document.documentElement.scrollHeight - 300
+      ) {
         if (hasMorePosts && !loadPostsLoading) {
           dispatch({
             type: LOAD_POSTS_REQUEST,
@@ -29,9 +38,9 @@ const Home = () => {
         }
       }
     }
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll);
     return () => {
-      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener("scroll", onScroll);
     };
   }, [mainPosts, hasMorePosts, loadPostsLoading]);
 
