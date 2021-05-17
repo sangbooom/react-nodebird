@@ -2,7 +2,7 @@ import React, { useCallback, useState, useEffect, useRef } from "react";
 import { Form, Input, Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 
-import { ADD_POST_REQUEST } from "../reducers/post";
+import { ADD_POST_REQUEST, addPost } from "../reducers/post";
 
 const PostForm = () => {
   const dispatch = useDispatch();
@@ -23,10 +23,11 @@ const PostForm = () => {
   }, [addPostDone]);
 
   const onSubmitForm = useCallback(() => {
-    dispatch({
-      type: ADD_POST_REQUEST,
-      data: text,
-    });
+    // dispatch({
+    //   type: ADD_POST_REQUEST,
+    //   data: text,
+    // });
+    dispatch(addPost(text)); // 위와 같은 의미
   }, [text]);
 
   const onChangeText = useCallback((e) => {
@@ -46,7 +47,7 @@ const PostForm = () => {
         onChange={onChangeText}
       />
       <div>
-        <input type="file" multiple hidden ref={imageInput} />
+        <input type="file" name="image" multiple hidden ref={imageInput} />
         <Button onClick={onClickImageUpload}>이미지 업로드</Button>
         <Button
           type="primary"
