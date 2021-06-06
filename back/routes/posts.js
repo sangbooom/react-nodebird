@@ -1,47 +1,53 @@
-const express = require("express");
-const { Post, User, Image, Comment } = require("../models/");
+const express = require('express');
+const { Op } = require('sequelize');
+
+const { Post, Image, User, Comment } = require('../models');
 
 const router = express.Router();
 
-router.get("/", async (req, res, next) => {
-  //GET /posts 여러개 가져올때, 복수니까
+router.get('/', async (req, res, next) => { // GET /posts
   try {
+    const where = {};
+    if (parseInt(req.query.lastId, 10)) { // 초기 로딩이 아닐 때
+      where.id = { [Op.lt]: parseInt(req.query.lastId, 10)}
+    } // 21 20 19 18 17 16 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1
     const posts = await Post.findAll({
-      //   where,
-      limit: 10, // 10개만 가져와라, 스크롤내리면 또 10개만 가져오고 ....
-      //   offset: 0, // 1~10번 게시글 가져와라, offset이 100이면? 101~110번 게시글 가져와라.
+      where,
+      limit: 10,
       order: [
-        ["createdAt", "DESC"], //
-        [Comment, "createdAt", "DESC"],
-      ], // 내림차순 순으로 데이터를 가져와라. (최신 데이터부터 가져와라)
-      include: [
-        {
-          model: User,
-          attributes: ["id", "nickname"],
-        },
-        {
-          model: Image,
-        },
-        {
-          model: Comment,
-          include: [
-            {
-              model: User,
-              attributes: ["id", "nickname"],
-              order: [["createdAt", "DESC"]],
-            },
-          ],
-        },
-        {
-          model: User,
-          as: "Likers",
-          attributes: ["id"],
-        },
+        ['createdAt', 'DESC'],
+        [Comment, 'createdAt', 'DESC'],
       ],
+      include: [{
+        model: User,
+        attributes: ['id', 'nickname'],
+      }, {
+        model: Image,
+      }, {
+        model: Comment,
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname'],
+        }],
+      }, {
+        model: User, // 좋아요 누른 사람
+        as: 'Likers',
+        attributes: ['id'],
+      }, {
+        model: Post,
+        as: 'Retweet',
+        include: [{
+          model: User,
+          attributes: ['id', 'nickname'],
+        }, {
+          model: Image,
+        }]
+      }],
     });
+    console.log(posts);
     res.status(200).json(posts);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     next(error);
   }
 });
