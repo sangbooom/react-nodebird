@@ -36,7 +36,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: ["http://localhost:3060", "http://3.36.220.168"],
+    origin: ["http://localhost:3060", "http://15.165.25.18"],
     credentials: true,
   })
 );
@@ -51,6 +51,11 @@ app.use(
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      domain: process.env.NODE_ENV === "production" && "http://15.165.25.18",
+    },
   })
 );
 app.use(passport.initialize());
