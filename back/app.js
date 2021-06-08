@@ -1,28 +1,29 @@
 const express = require("express");
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+
 const postRouter = require("./routes/post");
 const postsRouter = require("./routes/posts");
 const userRouter = require("./routes/user");
+const hashtagRouter = require("./routes/hashtag");
 const db = require("./models");
 const passportConfig = require("./passport");
 
-const app = express();
 dotenv.config();
+const app = express();
 db.sequelize
   .sync()
   .then(() => {
     console.log("db 연결 성공");
   })
   .catch(console.error);
-
 passportConfig();
 
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 app.use(
   cors({
     origin: "http://localhost:3060",
@@ -34,12 +35,11 @@ app.use(express.urlencoded({ extended: true })); //form에서 submit하면 데�
 
 // 왜 앱에는 multer 적용 안할까? 어떤 폼에서는 image를 여러개 올릴것이고 어떤 폼에서는 텍스트를 올릴수도 있다. 멀티파트로 보낼수도 있다
 // 앱에 장착하면 모든 라우터에 적용이 되고 라우터마다 적용하면 개별적으로 적용이 되니까 라우터마다 별도 세팅을 해준다.
-
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(
   session({
     saveUninitialized: false,
-    resabe: false,
+    resave: false,
     secret: process.env.COOKIE_SECRET,
   })
 );
@@ -47,13 +47,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get("/", (req, res) => {
-  res.send("/");
+  res.send("hello express");
 });
-
-app.use("/post", postRouter); // 분리
+// API는 다른 서비스가 내 서비스의 기능을 실행할 수 있게 열어둔 창구
 app.use("/posts", postsRouter);
+app.use("/post", postRouter);
 app.use("/user", userRouter);
+app.use("/hashtag", hashtagRouter);
 
-app.listen("3065", () => {
-  console.log("서버 실행 중!!");
+app.listen(3065, () => {
+  console.log("서버 실행 중!");
 });
