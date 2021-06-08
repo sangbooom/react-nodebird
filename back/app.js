@@ -27,7 +27,7 @@ passportConfig();
 
 if (process.env.NODE_ENV === "production") {
   app.use(morgan("combined")); //에러 로그랑 더 잘보여줌, 접속한 사용자의 ip를 보여주기도함
-  app.use(hpp()); // 보안에 도움되는 것들 
+  app.use(hpp()); // 보안에 도움되는 것들
   app.use(helmet()); // 보안에 도움되는 것들
 } else {
   app.use(morgan("dev"));
@@ -36,7 +36,7 @@ if (process.env.NODE_ENV === "production") {
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: ["http://localhost:3060", 'nodebird.com'],
+    origin: ["http://localhost:3060", "nodebird.com", "http://3.35.234.85"],
     credentials: true,
   })
 );
