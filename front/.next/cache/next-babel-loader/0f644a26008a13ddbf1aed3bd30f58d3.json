@@ -1,0 +1,1 @@
+{"ast":null,"code":"export const backUrl = 'http://15.165.25.18/';","map":{"version":3,"sources":["C:/Users/Sang/react-nodebird/front/config/config.js"],"names":["backUrl"],"mappings":"AAAA,OAAO,MAAMA,OAAO,GAAG,sBAAhB","sourcesContent":["export const backUrl = 'http://15.165.25.18/';\n"]},"metadata":{},"sourceType":"module"}
