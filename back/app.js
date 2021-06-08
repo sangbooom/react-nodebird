@@ -5,6 +5,8 @@ const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const dotenv = require("dotenv");
 const morgan = require("morgan");
+const hpp = require("hpp");
+const helmet = require("helmet");
 
 const postRouter = require("./routes/post");
 const postsRouter = require("./routes/posts");
@@ -23,10 +25,18 @@ db.sequelize
   .catch(console.error);
 passportConfig();
 
+if (process.env.NODE_ENV === "production") {
+  app.use(morgan("combined")); //에러 로그랑 더 잘보여줌, 접속한 사용자의 ip를 보여주기도함
+  app.use(hpp()); // 보안에 도움되는 것들 
+  app.use(helmet()); // 보안에 도움되는 것들
+} else {
+  app.use(morgan("dev"));
+}
+
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: "http://localhost:3060",
+    origin: ["http://localhost:3060", 'nodebird.com'],
     credentials: true,
   })
 );
